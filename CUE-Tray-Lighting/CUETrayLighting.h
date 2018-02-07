@@ -3,13 +3,12 @@
 #include <QtWidgets/QDialog>
 #include "ui_CUETrayLighting.h"
 
-class CUETrayLighting : public QDialog
-{
+class CUETrayLighting : public QDialog {
 	Q_OBJECT
 
-public:
-	CUETrayLighting(QWidget *parent = Q_NULLPTR);
+	public:
+	CUETrayLighting(QWidget* parent = Q_NULLPTR);
 
-private:
+	private:
 	Ui::CUETrayLightingClass ui;
 };
