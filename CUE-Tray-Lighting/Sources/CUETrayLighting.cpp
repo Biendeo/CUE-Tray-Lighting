@@ -1,5 +1,8 @@
 #include "CUETrayLighting.h"
 
+#include <chrono>
+#include <thread>
+
 #include <QAction>
 #include <QMenu>
 #include <QSystemTrayIcon>
@@ -20,7 +23,18 @@ CUETrayLighting::CUETrayLighting(QWidget* parent) : QDialog(parent) {
 	aboutAction->setText("CUE Tray Lighting");
 	aboutAction->setDisabled(true);
 	menu->addAction(aboutAction);
-	
+
+	QAction* creditsAction = new QAction(this);
+	creditsAction->setText("By Biendeo");
+	creditsAction->setDisabled(true);
+	menu->addAction(creditsAction);
+
+	// This option is here if needed explicitly.
+	QAction* refreshAction = new QAction(this);
+	refreshAction->setText("Refresh");
+	connect(refreshAction, SIGNAL(triggered()), this, SLOT(Refresh()));
+	menu->addAction(refreshAction);
+
 	QAction* closeAction = new QAction(this);
 	closeAction->setText("Close");
 	connect(closeAction, SIGNAL(triggered()), trayIcon, SLOT(hide()));
@@ -30,4 +44,14 @@ CUETrayLighting::CUETrayLighting(QWidget* parent) : QDialog(parent) {
 	// Set the context menu.
 	trayIcon->setContextMenu(menu);
 	trayIcon->show();
+
+
+	// The light controller should already be working and running, but for posterity we refresh
+	// after two seconds just to make sure it's up.
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	controller.Refresh();
+}
+
+void CUETrayLighting::Refresh() {
+	controller.Refresh();
 }

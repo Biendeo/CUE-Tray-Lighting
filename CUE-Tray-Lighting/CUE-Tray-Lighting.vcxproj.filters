@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CUETrayLighting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CUETrayLighting.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -13,7 +10,16 @@
     <ClCompile Include="GeneratedFiles\qrc_CUETrayLighting.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Sources\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\CUETrayLighting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SystemInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\LightController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,19 +51,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="CUETrayLighting.h">
+    <CustomBuild Include="Sources\CUETrayLighting.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="CUETrayLighting.ui">
+    <CustomBuild Include="Sources\CUETrayLighting.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="CUETrayLighting.qrc">
+    <CustomBuild Include="Sources\CUETrayLighting.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_CUETrayLighting.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\SystemInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\LightController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

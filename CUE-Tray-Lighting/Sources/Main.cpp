@@ -3,6 +3,7 @@
 #include <QSystemTrayIcon>
 
 #include "CUETrayLighting.h"
+#include "SystemInfo.h"
 
 int main(int argc, char* argv[]) {
 	QApplication a(argc, argv);
@@ -12,6 +13,8 @@ int main(int argc, char* argv[]) {
 		QMessageBox::critical(0, QObject::tr("CUE Tray Lighting"), QObject::tr("I couldn't detect any tray on this system."));
 		return 1;
 	}
+
+	SetupCPUReadings();
 
 	CUETrayLighting w;
 

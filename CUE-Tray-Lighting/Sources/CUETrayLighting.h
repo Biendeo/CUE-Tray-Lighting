@@ -3,6 +3,8 @@
 #include <QtWidgets/QDialog>
 #include "ui_CUETrayLighting.h"
 
+#include "LightController.h"
+
 class CUETrayLighting : public QDialog {
 	Q_OBJECT
 
@@ -11,4 +13,8 @@ class CUETrayLighting : public QDialog {
 
 	private:
 	Ui::CUETrayLightingClass ui;
+	LightController controller;
+
+	private slots:
+	void Refresh();
 };
