@@ -14,7 +14,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	CUETrayLighting w;
+
 	// I only want the tray icon, so we won't show the dialog from here.
 	//w.show();
+
 	return a.exec();
 }
