@@ -30,12 +30,12 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>Temp$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)Binaries$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)Temp\$(PlatformShortName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>Temp$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)Binaries$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)Temp\$(PlatformShortName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
