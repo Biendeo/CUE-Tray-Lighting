@@ -17,13 +17,17 @@ class LightController {
 
 	private:
 	CorsairProtocolDetails details;
-	std::thread updateThread;
+	std::thread cpuMemThread;
+	std::thread timeThread;
 
 	std::mutex cueLock;
 	bool shuttingDown;
 
-	void UpdateLoop();
+	void CPUMemLoop();
 	void SetCPULights(double value);
 	void SetMemLights(double value);
+
+	void TimeLoop();
+	void SetTimeLights(bool tickLight, tm* time);
 };
 
