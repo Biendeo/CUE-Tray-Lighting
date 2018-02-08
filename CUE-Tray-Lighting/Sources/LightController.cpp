@@ -5,6 +5,8 @@
 #include <ctime>
 #include <list>
 #include <numeric>
+#define NOMINMAX
+#include <Windows.h>
 
 #include "SystemInfo.h"
 
@@ -22,6 +24,7 @@ LightController::LightController() {
 
 	cpuMemThread = std::thread(&LightController::CPUMemLoop, this);
 	timeThread = std::thread(&LightController::TimeLoop, this);
+	keyPressThread = std::thread(&LightController::KeyPressLoop, this);
 
 	// Construction should perform a refresh.
 	Refresh();
@@ -42,7 +45,7 @@ void LightController::Refresh() {
 
 void LightController::CPUMemLoop() {
 	static const size_t readingCount = 10;
-	static const auto updateDelay = std::chrono::milliseconds(100);
+	static const auto updateDelay = std::chrono::milliseconds(25);
 
 	// Our lighting updates will be the average CPU on the back row of the K95, and the average
 	// memory on the MM800.
@@ -169,18 +172,63 @@ void LightController::SetTimeLights(bool blinkLight, tm* time) {
 
 	if (blinkLight) {
 		auto ledColor = CorsairLedColor{CLK_Escape, static_cast<int>(mainColor[0] * 255), static_cast<int>(mainColor[1] * 255), static_cast<int>(mainColor[2] * 255)};
+		cueLock.lock();
 		CorsairSetLedsColors(1, &ledColor);
+		cueLock.unlock();
 	} else {
 		auto ledColor = CorsairLedColor{CLK_Escape, 0, 0, 0};
+		cueLock.lock();
 		CorsairSetLedsColors(1, &ledColor);
+		cueLock.unlock();
 	}
 
 	int currentKey = time->tm_sec % 12;
 	if (currentKey == 0) {
 		auto ledColor = CorsairLedColor{fKeys[(currentKey + 11) % 12], static_cast<int>(backColor[0] * 255), static_cast<int>(backColor[1] * 255), static_cast<int>(backColor[2] * 255)};
+		cueLock.lock();
 		CorsairSetLedsColors(1, &ledColor);
+		cueLock.unlock();
 	} else {
 		auto ledColor = CorsairLedColor{fKeys[(currentKey + 11) % 12], static_cast<int>(mainColor[0] * 255), static_cast<int>(mainColor[1] * 255), static_cast<int>(mainColor[2] * 255)};
+		cueLock.lock();
+		CorsairSetLedsColors(1, &ledColor);
+		cueLock.unlock();
+	}
+}
+
+void LightController::KeyPressLoop() {
+	static const auto updateDelay = std::chrono::milliseconds(25);
+
+	while (!shuttingDown) {
+		SetLockLights();
+		std::this_thread::sleep_for(updateDelay);
+	}
+}
+
+void LightController::SetLockLights() {
+	static const double colorOn[] = {1.0, 1.0, 1.0};
+	static const double colorOff[] = {0.0, 0.0, 0.0};
+	cueLock.lock();
+	if (GetKeyState(VK_NUMLOCK) & 1) {
+		auto ledColor = CorsairLedColor{CLK_NumLock, static_cast<int>(colorOn[0] * 255), static_cast<int>(colorOn[1] * 255), static_cast<int>(colorOn[2] * 255)};
+		CorsairSetLedsColors(1, &ledColor);
+	} else {
+		auto ledColor = CorsairLedColor{CLK_NumLock, static_cast<int>(colorOff[0] * 255), static_cast<int>(colorOff[1] * 255), static_cast<int>(colorOff[2] * 255)};
 		CorsairSetLedsColors(1, &ledColor);
 	}
+	if (GetKeyState(VK_CAPITAL) & 1) {
+		auto ledColor = CorsairLedColor{CLK_CapsLock, static_cast<int>(colorOn[0] * 255), static_cast<int>(colorOn[1] * 255), static_cast<int>(colorOn[2] * 255)};
+		CorsairSetLedsColors(1, &ledColor);
+	} else {
+		auto ledColor = CorsairLedColor{CLK_CapsLock, static_cast<int>(colorOff[0] * 255), static_cast<int>(colorOff[1] * 255), static_cast<int>(colorOff[2] * 255)};
+		CorsairSetLedsColors(1, &ledColor);
+	}
+	if (GetKeyState(VK_SCROLL) & 1) {
+		auto ledColor = CorsairLedColor{CLK_ScrollLock, static_cast<int>(colorOn[0] * 255), static_cast<int>(colorOn[1] * 255), static_cast<int>(colorOn[2] * 255)};
+		CorsairSetLedsColors(1, &ledColor);
+	} else {
+		auto ledColor = CorsairLedColor{CLK_ScrollLock, static_cast<int>(colorOff[0] * 255), static_cast<int>(colorOff[1] * 255), static_cast<int>(colorOff[2] * 255)};
+		CorsairSetLedsColors(1, &ledColor);
+	}
+	cueLock.unlock();
 }

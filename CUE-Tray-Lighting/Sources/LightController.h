@@ -19,6 +19,7 @@ class LightController {
 	CorsairProtocolDetails details;
 	std::thread cpuMemThread;
 	std::thread timeThread;
+	std::thread keyPressThread;
 
 	std::mutex cueLock;
 	bool shuttingDown;
@@ -29,5 +30,8 @@ class LightController {
 
 	void TimeLoop();
 	void SetTimeLights(bool tickLight, tm* time);
+
+	void KeyPressLoop();
+	void SetLockLights();
 };
 
